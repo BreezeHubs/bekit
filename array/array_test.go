@@ -1,38 +1,34 @@
 package array
 
-import (
-	"testing"
-)
+// func TestArrayForInt(t *testing.T) {
+// 	arr := []int{1, 4, 5, 67, 89, 0, 346, 3}
 
-func TestArrayForInt(t *testing.T) {
-	arr := []int{1, 4, 5, 67, 89, 0, 346, 3}
+// 	new, err := For(arr, func(val int, index int) any {
+// 		if val > 10 {
+// 			return val
+// 		}
+// 		return false
+// 	})
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	t.Log(new)
+// }
 
-	new, err := For(arr, func(val int, index int) any {
-		if val > 10 {
-			return val
-		}
-		return false
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Log(new)
-}
+// func TestArrayForString(t *testing.T) {
+// 	arr := []string{"1", "4", "5", "67", "89", "0", "346", "3"}
 
-func TestArrayForString(t *testing.T) {
-	arr := []string{"1", "4", "5", "67", "89", "0", "346", "3"}
-
-	new, err := For(arr, func(val string, index int) any {
-		if len(val) > 2 {
-			return val
-		}
-		return false
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Log(new)
-}
+// 	new, err := For(arr, func(val string, index int) any {
+// 		if len(val) > 2 {
+// 			return val
+// 		}
+// 		return false
+// 	})
+// 	if err != nil {
+// 		t.Fatal(err)
+// 	}
+// 	t.Log(new)
+// }
 
 //func TestArrayFor(t *testing.T) {
 //	testCases := []struct {
