@@ -24,7 +24,11 @@ func Recover(stack bool) gin.HandlerFunc {
 				}
 
 				//封装通用json返回
-				c.JSON(500, gin.H{500, errStr, nil})
+				c.JSON(500, gin.H{
+					"code":    500,
+					"message": errStr,
+					"data":    nil,
+				})
 			}
 		}()
 		c.Next()
