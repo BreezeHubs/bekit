@@ -1,4 +1,4 @@
-module bekit
+module github.com/BreezeHubs/bekit
 
 go 1.19
 
