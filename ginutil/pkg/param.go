@@ -1,4 +1,4 @@
-package middleware
+package pkg
 
 import (
 	"errors"
@@ -7,8 +7,12 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-// 自定义错误消息
+// FilterBindErr 自定义错误消息
 func FilterBindErr(errs error, r any) error {
+	if errs == nil {
+		return nil
+	}
+
 	vErrs := errs.(validator.ValidationErrors)
 	s := reflect.TypeOf(r)
 	for _, fieldError := range vErrs {
@@ -27,5 +31,5 @@ func FilterBindErr(errs error, r any) error {
 		//无法匹配到错误，如：user的格式需遵守: required
 		return errors.New(fieldError.Field() + "的格式需遵守: " + fieldError.Tag())
 	}
-	return errors.New("")
+	return nil
 }

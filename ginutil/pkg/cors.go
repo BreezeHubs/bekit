@@ -1,4 +1,4 @@
-package middleware
+package pkg
 
 import (
 	"net/http"
@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Cors 跨域
 func Cors(url ...string) gin.HandlerFunc {
 	urlStr := "*"
 	if len(url) > 0 {
