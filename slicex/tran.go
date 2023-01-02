@@ -9,7 +9,7 @@ func ArrayToMap[T any](array []T) map[int]T {
 }
 
 func MapToArray[T any, K comparable](m map[K]T) []T {
-	array := []T{}
+	var array []T
 	for _, v := range m {
 		array = append(array, v)
 	}
