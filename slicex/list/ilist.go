@@ -14,7 +14,7 @@ type IArrayList[T any] interface {
 	QueueJump(index int, value T) error
 
 	// Delete 删除数据
-	Delete(index int) error
+	Delete(index int) (T, error)
 
 	// Len 获取数据长度
 	Len() int
@@ -24,4 +24,7 @@ type IArrayList[T any] interface {
 
 	// Range 遍历数据
 	Range(f func(index int, value T) error) error
+
+	// GetSlice 获取所有数据
+	GetSlice() []T
 }
