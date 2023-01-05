@@ -1,6 +1,8 @@
 package list
 
-import "github.com/BreezeHubs/bekit/slicex"
+import (
+	"github.com/BreezeHubs/bekit/slicex"
+)
 
 var _ IArrayList[any] = (*LinkedList[any])(nil)
 
@@ -28,6 +30,7 @@ func NewLinkedList[T any]() IArrayList[T] {
 	}
 }
 
+//判断是否超出下标
 func (l *LinkedList[T]) isOutOfRange(index int) error {
 	if index < 0 || index >= l.length {
 		return slicex.IndexError
@@ -35,6 +38,7 @@ func (l *LinkedList[T]) isOutOfRange(index int) error {
 	return nil
 }
 
+//根据下标找到对应节点
 func (l *LinkedList[T]) findNode(index int) *node[T] {
 	//使用 二分法 查找
 	var tmp *node[T]
@@ -45,7 +49,7 @@ func (l *LinkedList[T]) findNode(index int) *node[T] {
 		}
 	} else {
 		tmp = l.tail
-		for i := 0; i <= l.Len()-index; i++ {
+		for i := l.Len(); i > index; i-- {
 			tmp = tmp.prev
 		}
 	}
@@ -60,26 +64,52 @@ func (l *LinkedList[T]) Get(index int) (value T, err error) {
 	return
 }
 
-func (l *LinkedList[T]) Set(index int, value T) error {
-	//TODO implement me
-	panic("implement me")
+func (l *LinkedList[T]) Set(index int, value T) (err error) {
+	if err = l.isOutOfRange(index); err != nil {
+		return
+	}
+	l.findNode(index).value = value
+	return
 }
 
 func (l *LinkedList[T]) Append(value T) int {
-	node := &node[T]{prev: l.tail.prev, next: l.tail, value: value}
-	node.prev.next, node.next.prev = node, node
-	l.length++
-	return 0
+	node := &node[T]{
+		prev:  l.tail.prev, //为尾节点的上一个
+		next:  l.tail,      //为尾节点
+		value: value,
+	}
+	node.prev.next = node //将上一个节点的下一个更新为新节点的指针
+	node.next.prev = node //将下一个节点的上一个更新为新节点的指针
+	l.length++            //链表长度+1
+	return l.Len() - 1
 }
 
-func (l *LinkedList[T]) QueueJump(index int, value T) error {
-	//TODO implement me
-	panic("implement me")
+func (l *LinkedList[T]) QueueJump(index int, value T) (err error) {
+	if err = l.isOutOfRange(index); err != nil {
+		return
+	}
+	tmpNode := l.findNode(index) //获取原本下标的节点
+	node := &node[T]{
+		prev:  tmpNode.prev, //为原本节点的上一个
+		next:  tmpNode,      //为原本节点
+		value: value,
+	}
+	node.prev.next = node //将上一个节点的下一个更新为新节点的指针
+	node.next.prev = node //将下一个节点的上一个更新为新节点的指针
+	l.length++            //链表长度+1
+	return
 }
 
-func (l *LinkedList[T]) Delete(index int) (T, error) {
-	//TODO implement me
-	panic("implement me")
+func (l *LinkedList[T]) Delete(index int) (value T, err error) {
+	if err = l.isOutOfRange(index); err != nil {
+		return
+	}
+	tmpNode := l.findNode(index)     //获取原本下标的节点
+	tmpNode.prev.next = tmpNode.next //将上一个节点的下一个 更新为下个顺位节点的指针
+	tmpNode.next.prev = tmpNode.prev //将下一个节点的上一个 更新为前个顺位节点的指针
+	l.length--                       //链表长度-1
+	value = tmpNode.value
+	return
 }
 
 func (l *LinkedList[T]) Len() int {
@@ -91,7 +121,7 @@ func (l *LinkedList[T]) Cap() int {
 }
 
 func (l *LinkedList[T]) Range(f func(index int, value T) error) error {
-	tmp := l.head
+	tmp := l.head.next
 	for i := 0; i < l.Len(); i++ {
 		if err := f(i, tmp.value); err != nil {
 			return err
@@ -102,6 +132,11 @@ func (l *LinkedList[T]) Range(f func(index int, value T) error) error {
 }
 
 func (l *LinkedList[T]) GetSlice() []T {
-	//TODO implement me
-	panic("implement me")
+	s := make([]T, l.length)
+	tmp := l.head.next
+	for i := 0; i < l.length; i++ {
+		s[i] = tmp.value
+		tmp = tmp.next
+	}
+	return s
 }
