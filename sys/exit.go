@@ -14,7 +14,6 @@ type eSignal struct {
 func NewListenExitSignal() *eSignal {
 	// 从这里开始优雅退出监听系统信号，强制退出以及超时强制退出。
 	c := make(chan os.Signal, 1)
-
 	e := &eSignal{c: c}
 	go e.wait()
 	return e
