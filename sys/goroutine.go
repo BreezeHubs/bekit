@@ -2,29 +2,28 @@ package sys
 
 import (
 	"runtime"
-	"syscall"
 )
 
-func GetCurrentThreadIDByWin() int {
-	var (
-		user32   *syscall.DLL
-		threadID *syscall.Proc
-		err      error
-	)
-
-	user32, err = syscall.LoadDLL("Kernel32.dll")
-	if err != nil {
-		return -1
-	}
-
-	threadID, err = user32.FindProc("GetCurrentThreadId")
-	if err != nil {
-		return -1
-	}
-
-	pid, _, _ := threadID.Call()
-	return int(pid)
-}
+//func GetCurrentThreadIDByWin() int {
+//	var (
+//		user32   *syscall.DLL
+//		threadID *syscall.Proc
+//		err      error
+//	)
+//
+//	user32, err = syscall.LoadDLL("Kernel32.dll")
+//	if err != nil {
+//		return -1
+//	}
+//
+//	threadID, err = user32.FindProc("GetCurrentThreadId")
+//	if err != nil {
+//		return -1
+//	}
+//
+//	pid, _, _ := threadID.Call()
+//	return int(pid)
+//}
 
 func SetThreadNum(n int) int {
 	return runtime.GOMAXPROCS(n)
